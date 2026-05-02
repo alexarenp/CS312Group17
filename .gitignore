@@ -1,0 +1,14 @@
+# Database credentials - DO NOT SHARE
+db.php
+
+# Backup files
+*.bak
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
