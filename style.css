@@ -265,6 +265,32 @@ footer {
     margin-left: auto;
     margin-right: auto;
 }
+.selec_info{
+    text-align: center;
+}
+.addColor {
+    text-align: center;
+}
+.editColor1 {
+    text-align: center;
+}
+.editColor2 {
+    text-align: center;
+}
+.deleteColor {
+    text-align: center;
+}
+.color-selec-grid {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%; 
+}
+.color-selec-grid td {
+    border: 1px solid #000000;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
 @page {
     size: letter portrait;
     margin: 0.5in;

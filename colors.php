@@ -3,13 +3,12 @@
 
 <header>
     <h1>Color Selection</h1>
-    <link rel="stylesheet" href="style.css">
 </header>
 
-<p id = "selec_info"> Manage the color available in the Color Coordinator. You can add, edit, or remove colors from the list. </p>
+<p class= "selec_info"> Manage the color available in the Color Coordinator. You can add, edit, or remove colors from the list. </p>
 
 <h2> Add a Color </h2>
-<form action="colors.php" method="GET">
+<form class='addColor' action="colors.php" method="GET">
         Color Name: <input type="text" name="colorName" placeholder="e.g. Cyan" required>
         Hex Value: <input type="text" name="hexValue" placeholder="e.g. 00FFFF" required>
         <button type="submit">Submit</button>
@@ -37,8 +36,8 @@ if (isset($_GET['colorName']) && isset($_GET['hexValue'])) {
 }
 ?>
 <h2> Edit a Color </h2>
-<p id = "selec_info"> Select Color: </p>
-<form action="colors.php" method="GET">
+<p class = "selec_info"> Select Color: </p>
+<form class='editColor1' action="colors.php" method="GET">
 <select name="select_color1">
     <?php foreach ($colors as $color): ?>
         <option value="<?php echo $color['name']; ?>">
@@ -46,7 +45,7 @@ if (isset($_GET['colorName']) && isset($_GET['hexValue'])) {
         </option>
     <?php endforeach; ?>
 </select>
-<form action="colors.php" method="GET">
+<form class='editColor2' action="colors.php" method="GET">
         New Name: <input type="text" name="colorName2" placeholder="e.g. Cyan" required>
         New Hex Value: <input type="text" name="hexValue2" placeholder="e.g. 00FFFF" required>
         <button type="submit">Submit</button>
@@ -67,8 +66,8 @@ if (isset($_GET['select_color1']) && isset($_GET['colorName2']) && isset($_GET['
 }
 ?>
 <h2> Delete a Color </h2>
-<p id = "selec_info"> Select Color: </p>
-<form action="colors.php" method="GET">
+<p class = "selec_info"> Select Color: </p>
+<form class='deleteColor' action="colors.php" method="GET">
 <select name="select_color2">
     <?php foreach ($colors as $color): ?>
         <option value="<?php echo $color['name']; ?>">
@@ -95,7 +94,9 @@ for($i = 0; $i < count($colors); $i++) {
     echo "<td>{$colors[$i]['name']}</td>";
     echo "<td>{$hex_values[$i]['hex_value']}</td>";
     echo "<td>";
+    echo "</tr>";
 }
+echo "</table>";
 ?>
 
 <?php include 'footer.php'; ?>
