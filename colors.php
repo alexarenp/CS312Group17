@@ -25,7 +25,7 @@ $hex_flat = array_column($hex_values, 'hex_value');
 if (isset($_GET['colorName']) && isset($_GET['hexValue'])) {
     $colorName = $_GET['colorName'];
     $hexValue = $_GET['hexValue'];
-    if (in_array($colorName, $colors_flat) && in_array($hexValue, $hex_flat)) {
+    if (in_array($colorName, $colors_flat) || in_array($hexValue, $hex_flat)) {
         echo "Color already exists in list of colors. Please add one that doesn't already exist.";
     }
     else {
@@ -66,24 +66,36 @@ if (isset($_GET['select_color1']) && isset($_GET['colorName2']) && isset($_GET['
 }
 ?>
 <h2> Delete a Color </h2>
-<p class = "selec_info"> Select Color: </p>
-<form class='deleteColor' action="colors.php" method="GET">
-<select name="select_color2">
-    <?php foreach ($colors as $color): ?>
-        <option value="<?php echo $color['name']; ?>">
-            <?php echo $color['name']; ?>
-        </option>
-    <?php endforeach; ?>
-</select>
-<button type="submit">Submit</button>
+<p class="selec_info"> Select Color: </p>
+<form class="deleteColor" action="colors.php" method="GET">
+    <select name="select_color2">
+        <?php foreach ($colors as $color): ?>
+            <option value="<?php echo $color['name']; ?>">
+                <?php echo $color['name']; ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <button type="submit" name="delete_request" value="1">Delete</button>
+
+    <?php if (isset($_GET['delete_request']) && isset($_GET['select_color2']) && count($colors) > 2): ?>
+        <p class="selec_info">Click confirm to delete <?php echo $_GET['select_color2']; ?>.</p>
+        <input type="hidden" name="select_color2" value="<?php echo $_GET['select_color2']; ?>">
+        <button type="submit" name="confirm_delete" value="1">Confirm Delete</button>
+    <?php endif; ?>
 </form>
+
 <?php
-if (isset($_GET['select_color2'])) {
+if (isset($_GET['delete_request']) && count($colors) < 2) {
+    echo "At least 2 colors must remain in the database. Deletion is not allowed.";
+}
+
+if (isset($_GET['confirm_delete']) && isset($_GET['select_color2']) && count($colors) > 2) {
     $select_color2 = $_GET['select_color2'];
     $deleteColor = "DELETE FROM colors WHERE name = '$select_color2'";
     $result = $conn->query($deleteColor);
     echo "Color deleted successfully!";
-}  
+}
 ?>
 <h2> Current Colors </h2>
 <?php
