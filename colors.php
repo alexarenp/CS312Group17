@@ -73,8 +73,7 @@ if (isset($_POST['select_color1']) && isset($_POST['colorName2']) && isset($_POS
      if (!preg_match('/^#[0-9A-Fa-f]{6}$/', $hexValue2)) {
         echo "<div class='error-msg'>Invalid hex format for edit.</div>";
     } else {
-        // FIX 4: Check if name OR hex already exists (changed && to ||)
-        // Note: For edit, we need to exclude the current color being edited
+  
         $conflict = false;
         foreach ($colors as $color) {
             if ($color['name'] !== $select_color1) {
