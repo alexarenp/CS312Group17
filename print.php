@@ -1,6 +1,8 @@
 <?php
 $bodyClass = "print-page";
-include 'header.php';?>
+include 'header.php';
+require 'db.php';
+?>
 
 <div class="print-header">
     <img src="pictures/color_map.jpeg" alt="Company Logo" class="greyscale-logo">
@@ -14,22 +16,14 @@ include 'header.php';?>
 <?php
     $gridSize = $_GET["gridSize"];
     $numColors = $_GET["numColors"];
+    
+    $colorQuery = $conn->query("SELECT name, hex_value FROM colors ORDER BY id");
+    $colorMap = [];
+    while ($row = $colorQuery->fetch_assoc()) {
+        $colorMap[$row['name']] = $row['hex_value'];
+    }
+    
     $colorList = [];
-
-
-    $colorMap = [
-        "Red" => "#e74c3c",
-        "Orange" => "#e67e22",
-        "Yellow" => "#f1c40f",
-        "Green" => "#27ae60",
-        "Blue" => "#2980b9",
-        "Purple" => "#8e44ad",
-        "Grey" => "#95a5a6",
-        "Brown" => "#7f5539",
-        "Black" => "#2c2c2c",
-        "Teal" => "#008080"
-    ];
-
     for($i = 0; $i < $numColors; $i++) {
         $colorList[] = $_GET["color" . (string) $i];
     }
@@ -37,12 +31,11 @@ include 'header.php';?>
     echo "<table class='color-table'>";
     for($i = 0; $i < $numColors; $i++) {
         $nowColor = $colorList[$i];
-        $colorCode = $colorMap[$nowColor];
+        $colorCode = $colorMap[$nowColor] ?? "#000000";
         $coordinateVals = $_GET["coords" . $i] ?? "";
 
-
         echo "<tr>";
-        echo "<td>" . $nowColor . " - " . $colorCode . "</td>";
+        echo "<td>" . $nowColor . " — " . $colorCode . "</td>";
         echo "<td>" . $coordinateVals . "</td>";
         echo "</tr>";
     }
@@ -52,7 +45,7 @@ include 'header.php';?>
     echo "<h2>Coordinate Grid</h2>";
     echo "<table class='coordinate-grid'>";
     echo "<tr>";
-    echo "<td></td>";
+    echo "<td></th>";
     for($col = 0; $col < $gridSize; $col++) {
         echo "<td>" . $alphabet[$col] . "</td>";
     }
@@ -68,5 +61,4 @@ include 'header.php';?>
     echo "</table>";
 ?>
 
-
-
+<?php include 'footer.php'; ?>
