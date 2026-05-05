@@ -1,13 +1,25 @@
 <?php include 'header.php'; ?>
+<?php require 'db.php'; ?>
 
 <header>
     <h1>Color Coordinator</h1>
 </header>
+    
+     <?php
+        $colorQuery = $conn->query("SELECT name, hex_value FROM colors ORDER BY id");
+        $colors = [];
+        $colorHexMap = [];
+        while ($row = $colorQuery->fetch_assoc()) {
+            $colors[] = $row['name'];
+            $colorHexMap[$row['name']] = $row['hex_value'];
+        }
+        $totalColorsInDb = count($colors);
+        ?>
 
     <form action="color.php" method="GET">
         Rows and Columns: <input type="number" name="gridSize" placeholder="Enter grid size (1-26)" required>
         <br>
-        Colors: <input type="number" name="numColors" placeholder="Enter num colors (1-10)" required>
+        Colors: <input type="number" name="numColors" placeholder="Enter num colors  (1-<?php echo $totalColorsInDb; ?>)"" required>
         <br>
         <button type="submit">Submit</button>
     </form>
@@ -28,7 +40,7 @@
         }
         if(isset($_GET['numColors'])) {
             $numColors = $_GET['numColors'];
-            if($numColors < 1 || $numColors > 10) {
+            if($numColors < 1 || $numColors > $totalColorsInDb) {
                 echo "Not able to create a table with these values. Please specify a number of colors between 1 and 10. <br>";
                 $validNumColors = false;
             }
@@ -36,7 +48,6 @@
                 $validNumColors = true;
             }
         }
-        $colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Grey", "Brown", "Black", "Teal"];
         $alphabet = range('A', 'Z');
         if($validGridSize && $validNumColors) {
             echo "<h2>Color Selection</h2>";
@@ -117,18 +128,7 @@
             document.getElementById('coords' + rowIndex).textContent = list.join(', ');
         }
 
-        const colorMap = {
-            "Red":    "#e74c3c",
-            "Orange": "#e67e22",
-            "Yellow": "#f1c40f",
-            "Green":  "#27ae60",
-            "Blue":   "#2980b9",
-            "Purple": "#8e44ad",
-            "Grey":   "#95a5a6",
-            "Brown":  "#7f5539",
-            "Black":  "#2c2c2c",
-            "Teal":   "#008080"
-        };
+      const colorMap = <?php echo json_encode($colorHexMap); ?>;
  
         const previousValues = {};
         document.querySelectorAll('select[id^="color"]').forEach(function(sel) {
