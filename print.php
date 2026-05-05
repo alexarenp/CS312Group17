@@ -45,7 +45,7 @@ require 'db.php';
     echo "<h2>Coordinate Grid</h2>";
     echo "<table class='coordinate-grid'>";
     echo "<tr>";
-    echo "<td></th>";
+    echo "<td></td>";
     for($col = 0; $col < $gridSize; $col++) {
         echo "<td>" . $alphabet[$col] . "</td>";
     }
